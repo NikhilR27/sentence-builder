@@ -2,7 +2,7 @@ using Domain.Dtos;
 
 namespace Application.Words.Responses;
 
-public class GetWordsResponse
+public record GetWordsResponse
 {
-    public List<WordDto> WordDtos { get; set; }
+    public IReadOnlyCollection<WordDto> Words { get; init; } = Array.Empty<WordDto>();
 }
