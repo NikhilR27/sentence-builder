@@ -1,11 +1,9 @@
 using Application.Sentences.Responses;
-using Application.Words.Responses;
 using AutoMapper;
-using Domain.Dtos;
 using Infrastructure.Interfaces;
 using MediatR;
 
-namespace Application.Words.Queries;
+namespace Application.Sentences.Queries;
 
 public record GetAllSentencesQuery : IRequest<GetAllSentencesResponse>;
 
