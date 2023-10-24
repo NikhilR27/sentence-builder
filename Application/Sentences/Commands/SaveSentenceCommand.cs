@@ -1,6 +1,4 @@
-using System.Windows.Input;
 using Application.Sentences.Responses;
-using Application.Words.Responses;
 using Domain.Entities;
 using Infrastructure.Interfaces;
 using MediatR;
