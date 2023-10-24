@@ -7,8 +7,8 @@ namespace WebAPI.Controllers;
 public class WordController : BaseApiController
 {
     [HttpGet]
-    public async Task<ActionResult<GetWordsResponse>> GetWords([FromQuery] GetWordsQuery query)
+    public async Task<ActionResult<GetWordTypesResponse>> GetWordTypes([FromQuery] GetWordTypesQuery query)
     {
-        return await Mediator.Send(query);
+        return Ok(await Mediator.Send(query));
     }
 }

@@ -16,15 +16,13 @@ public partial class SentenceBuilderDbContext : DbContext
 
     public virtual DbSet<Sentence> Sentences { get; set; }
 
-    public virtual DbSet<SentenceWordMapping> SentenceWordMappings { get; set; }
-
     public virtual DbSet<Word> Words { get; set; }
 
     public virtual DbSet<WordType> WordTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=127.0.0.1,1433;Database=SentenceBuilderDb;User Id=sa;Password=Admin@123;Encrypt=false;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,25 +31,10 @@ public partial class SentenceBuilderDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("Sentence_pk");
 
             entity.ToTable("Sentence");
-        });
 
-        modelBuilder.Entity<SentenceWordMapping>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("SentenceWordMapping");
-
-            entity.HasIndex(e => new { e.SentenceId, e.WordId, e.DisplayOrder }, "SentenceWordMapping_pk").IsUnique();
-
-            entity.HasOne(d => d.Sentence).WithMany()
-                .HasForeignKey(d => d.SentenceId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("SentenceWordMapping___fk");
-
-            entity.HasOne(d => d.Word).WithMany()
-                .HasForeignKey(d => d.WordId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("SentenceWordMapping_Word_Id_fk");
+            entity.Property(e => e.SentenceText)
+                .HasMaxLength(100)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Word>(entity =>
@@ -61,7 +44,7 @@ public partial class SentenceBuilderDbContext : DbContext
             entity.ToTable("Word");
 
             entity.Property(e => e.WordText)
-                .HasMaxLength(1)
+                .HasMaxLength(100)
                 .IsUnicode(false);
 
             entity.HasOne(d => d.WordType).WithMany(p => p.Words)
@@ -77,7 +60,7 @@ public partial class SentenceBuilderDbContext : DbContext
             entity.ToTable("WordType");
 
             entity.Property(e => e.Description)
-                .HasMaxLength(1)
+                .HasMaxLength(100)
                 .IsUnicode(false);
         });
 

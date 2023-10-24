@@ -13,27 +13,35 @@ public class SentenceBuilderRepository : ISentenceBuilderRepository
         _context = context;
     }
 
-    public async Task<IReadOnlyCollection<Word>> GetWordsAsync()
+    public async Task<IReadOnlyCollection<WordType>> GetWordTypesAsync()
     {
         var result = await _context
-            .Set<Word>()
-            .Include(t => t.WordType)
+            .Set<WordType>()
+            .Include(t => t.Words)
             .ToListAsync();
         return result;
     }
 
-    public async Task<IReadOnlyCollection<SentenceWordMapping>> GetSentenceAsync(int id)
+    public async Task<IReadOnlyCollection<string>> GetSentencesAsync()
     {
         var result = await _context
-            .Set<SentenceWordMapping>()
-            .Where(x => x.SentenceId == id)
+            .Set<Sentence>()
+            .Select(s => s.SentenceText)
             .ToListAsync();
         return result;
     }
 
-    public async Task CreateSentenceAsync(SentenceWordMapping sentenceWordMapping)
+    public async Task<bool> CreateSentenceAsync(Sentence sentence)
     {
-        await _context.Set<SentenceWordMapping>().AddAsync(sentenceWordMapping);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.Set<Sentence>().AddAsync(sentence);
+            int rowsAffected = await _context.SaveChangesAsync();
+            return rowsAffected > 0;
+        }
+        catch (DbUpdateException)
+        {
+            return false;
+        }
     }
 }
