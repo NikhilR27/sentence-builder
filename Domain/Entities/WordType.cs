@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public partial class WordType
+public class WordType
 {
     public int Id { get; set; }
 

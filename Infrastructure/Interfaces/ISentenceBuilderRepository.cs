@@ -4,7 +4,8 @@ namespace Infrastructure.Interfaces;
 
 public interface ISentenceBuilderRepository
 {
-    Task<IReadOnlyCollection<Word>> GetWordsAsync();
-    Task<IReadOnlyCollection<SentenceWordMapping>> GetSentenceAsync(int id);
-    Task CreateSentenceAsync(SentenceWordMapping sentenceWordMapping);
+    // Task<IReadOnlyCollection<Word>> GetWordsAsync();
+    Task<IReadOnlyCollection<WordType>> GetWordTypesAsync();
+    Task<IReadOnlyCollection<string>> GetSentencesAsync();
+    Task<bool> CreateSentenceAsync(Sentence sentence);
 }
