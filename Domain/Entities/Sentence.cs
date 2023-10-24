@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public partial class Sentence
+public class Sentence
 {
     public int Id { get; set; }
 

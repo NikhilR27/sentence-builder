@@ -8,7 +8,7 @@ namespace Application.Sentences.Commands;
 public record SaveSentenceCommand : IRequest<SaveSentenceResponse>
 {
     public string Sentence { get; init; }
-};
+}
 
 public class SaveSentenceCommandHandler : IRequestHandler<SaveSentenceCommand, SaveSentenceResponse>
 {
