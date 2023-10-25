@@ -19,10 +19,6 @@ public partial class SentenceBuilderDbContext : DbContext
     public virtual DbSet<Word> Words { get; set; }
 
     public virtual DbSet<WordType> WordTypes { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-    }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

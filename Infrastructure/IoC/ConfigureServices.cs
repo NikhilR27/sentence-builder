@@ -14,7 +14,7 @@ public static class ConfigureServices
     {
         services.AddDbContext<DbContext, SentenceBuilderDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
         });
         services.AddTransient<ISentenceBuilderRepository, SentenceBuilderRepository>();
 

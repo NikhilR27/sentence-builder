@@ -1,0 +1,33 @@
+networks:
+  sentence-builder-app:
+    driver: bridge
+
+services:
+  db:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: Admin@123
+      MSSQL_SA_PASSWORD: Admin@123
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Admin@123 -Q 'SELECT 1' || exit 1" ]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+    volumes:
+      - ./data/init.sql:/docker-entrypoint-initdb.d
+  
+  api:
+    image: sentence-builder-api
+    build:
+      context: .
+      dockerfile: WebAPI/Dockerfile
+    depends_on:
+      - "db"
+    ports:
+      - "5242:80"
+    environment:
+      DB_CONNECTION_STRING: Server=db;Database=master;User Id=sa;Password=Admin@123;Encrypt=false;
+      
