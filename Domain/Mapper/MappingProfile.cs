@@ -14,13 +14,5 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Words,
                 opt => opt.MapFrom(src => src.Words.Select(word => word.WordText)))
             .ReverseMap();
-
-        CreateMap<Word, WordDto>()
-            .ForMember(dest => dest.WordText,
-                opt => opt.MapFrom(src => src.WordText))
-            .ForMember(opt => opt.WordTypeDto,
-                opt => opt.MapFrom(src => src.WordType))
-            .ReverseMap();
-        
     }
 }
