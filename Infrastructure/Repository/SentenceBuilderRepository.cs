@@ -17,7 +17,7 @@ public class SentenceBuilderRepository : ISentenceBuilderRepository
     {
         var result = await _context
             .Set<WordType>()
-            .Include(t => t.Words)
+            .Include(nameof(Word))
             .ToListAsync();
         return result;
     }

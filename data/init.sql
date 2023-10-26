@@ -1,91 +1,86 @@
-USE master;
-CREATE DATABASE SentenceBuilderDb;
+-- public.word_type definition
 
-USE SentenceBuilderDb;
-GO
+-- Drop table
 
-create table Sentence
-(
-    Id           int identity
-        constraint Sentence_pk
-        primary key,
-    SentenceText varchar(100) not null collate SQL_Latin1_General_CP1_CI_AS
-)
-    go
+-- DROP TABLE public.word_type;
 
-create table WordType
-(
-    Id          int identity
-        constraint WordType_pk
-        primary key,
-    Description varchar(100) not null collate SQL_Latin1_General_CP1_CI_AS
-)
-    go
+CREATE TABLE public.word_type (
+                                  id int4 NOT NULL,
+                                  description varchar NOT NULL,
+                                  CONSTRAINT id_pk PRIMARY KEY (id)
+);
 
-create table Word
-(
-    Id         int identity
-        constraint Word_pk
-        primary key,
-    WordText   varchar(100) not null collate SQL_Latin1_General_CP1_CI_AS,
-    WordTypeId int          not null
-        constraint Word_WordType_Id_fk
-            references WordType
-)
-    go
+
+-- public.sentence definition
+
+-- Drop table
+
+-- DROP TABLE public.sentence;
+
+CREATE TABLE public.sentence (
+                                 id serial4 NOT NULL,
+                                 sentence_text varchar NOT NULL
+);
+
+
+-- public.word definition
+
+-- Drop table
+
+-- DROP TABLE public.word;
+
+CREATE TABLE public.word (
+                             id int4 NOT NULL,
+                             word_text varchar NOT NULL,
+                             word_type_id int4 NOT NULL,
+                             CONSTRAINT word_fk FOREIGN KEY (word_type_id) REFERENCES public.word_type(id)
+);
+
+INSERT INTO word_type (id, description) VALUES (11, 'Exclamation');
+INSERT INTO word_type (id, description) VALUES (10, 'Determiner');
+INSERT INTO word_type (id, description) VALUES (9, 'Preposition');
+INSERT INTO word_type (id, description) VALUES (8, 'Pronoun');
+INSERT INTO word_type (id, description) VALUES (7, 'Adverb');
+INSERT INTO word_type (id, description) VALUES (6, 'Adjective');
+INSERT INTO word_type (id, description) VALUES (5, 'Verb');
+INSERT INTO word_type (id, description) VALUES (4, 'Noun');
 
 -- Insert Word entries for WordType: Exclamation
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Wow', 11);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Oh my!', 11);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Yay', 11);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Hooray', 11);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Bravo', 11);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (1, 'Wow', 11);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (2, 'Yay', 11);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (3, 'Bravo', 11);
 
 -- Insert Word entries for WordType: Determiner
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('The', 10);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('A', 10);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('An', 10);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Some', 10);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Any', 10);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (4, 'The', 10);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (5, 'A', 10);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (6, 'An', 10);
 
 -- Insert Word entries for WordType: Preposition
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('In', 9);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('On', 9);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Under', 9);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Between', 9);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Across', 9);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (7, 'In', 9);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (8, 'On', 9);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (9, 'Under', 9);
 
 -- Insert Word entries for WordType: Pronoun
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('I', 8);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('You', 8);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('He', 8);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('She', 8);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('They', 8);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (10, 'I', 8);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (11, 'You', 8);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (12, 'He', 8);
 
 -- Insert Word entries for WordType: Adverb
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Quickly', 7);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Slowly', 7);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Loudly', 7);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Softly', 7);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Suddenly', 7);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (13, 'Quickly', 7);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (14, 'Softly', 7);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (15, 'Suddenly', 7);
 
 -- Insert Word entries for WordType: Adjective
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Beautiful', 6);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Small', 6);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Green', 6);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Happy', 6);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Energetic', 6);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (16, 'Beautiful', 6);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (17, 'Green', 6);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (18, 'Happy', 6);
 
 -- Insert Word entries for WordType: Verb
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Run', 5);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Jump', 5);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Swim', 5);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Sing', 5);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Dance', 5);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (19, 'Run', 5);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (20, 'Swim', 5);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (21, 'Dance', 5);
 
 -- Insert Word entries for WordType: Noun
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Cat', 4);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Dog', 4);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Tree', 4);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Car', 4);
-INSERT INTO SentenceBuilderDb.dbo.Word (WordText, WordTypeId) VALUES ('Book', 4);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (22, 'Cat', 4);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (23, 'Tree', 4);
+INSERT INTO Word (id, word_text, word_type_id) VALUES (24, 'Book', 4);

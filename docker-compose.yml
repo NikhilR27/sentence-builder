@@ -1,24 +1,43 @@
-networks:
-  sentence-builder-app:
-    driver: bridge
-
 services:
   db:
+    image: db
+    container_name: db
     environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: Admin@123
-      MSSQL_SA_PASSWORD: Admin@123
-    image: mcr.microsoft.com/mssql/server:2019-latest
+      POSTGRES_DB: sentencebuilderdb
+      POSTGRES_PASSWORD: dbuserpwd123
+      POSTGRES_USER: dbuser
+    build:
+      context: ./data
+      target: db
+    ports:
+      - 5432:5432
     restart: always
-    healthcheck:
-      test: [ "CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Admin@123 -Q 'SELECT 1' || exit 1" ]
-      interval: 10s
-      retries: 10
-      start_period: 10s
-      timeout: 3s
-    volumes:
-      - ./data/init.sql:/docker-entrypoint-initdb.d
+
+      #  db:
+      #    environment:
+      #      ACCEPT_EULA: "Y"
+      #      SA_PASSWORD: Admin@123
+      #      MSSQL_SA_PASSWORD: Admin@123
+      #    image: mcr.microsoft.com/mssql/server:2019-latest
+      #    restart: always
+      #    ports:
+      #      - "1433:1433"
+      #    healthcheck:
+      #      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$$SA_PASSWORD" -Q "SELECT 1" || exit 1
+      #      interval: 30s
+      #      timeout: 30s
+      #      retries: 3
   
+  #  db:
+  #    build: ./data
+  #    environment:
+  #      ACCEPT_EULA: "Y"
+  #      SA_PASSWORD: Admin@123
+  #      MSSQL_SA_PASSWORD: Admin@123
+  #    ports:
+  #      - "1433:1433"
+  #    restart: always
+  #  
   api:
     image: sentence-builder-api
     build:
@@ -29,5 +48,4 @@ services:
     ports:
       - "5242:80"
     environment:
-      DB_CONNECTION_STRING: Server=db;Database=master;User Id=sa;Password=Admin@123;Encrypt=false;
-      
+      DB_CONNECTION_STRING: host=db;port=5432;database=sentencebuilderdb;username=dbuser;password=dbuserpwd123

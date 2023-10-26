@@ -12,9 +12,9 @@ public static class ConfigureServices
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<DbContext, SentenceBuilderDbContext>(options =>
+        services.AddDbContext<DbContext, SentencebuilderdbContext>(options =>
         {
-            options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });
         services.AddTransient<ISentenceBuilderRepository, SentenceBuilderRepository>();
 

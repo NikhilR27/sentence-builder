@@ -1,10 +1,4 @@
-﻿FROM mcr.microsoft.com/mssql/server:2019-latest
-
-ENV ACCEPT_EULA=Y
-ENV SA_PASSWORD=Admin@123
-ENV MSSQL_PID=Developer
-
-EXPOSE 1433
-
-COPY ./init.sql /docker-entrypoint-initdb.d/
-CMD [ "/opt/mssql/bin/sqlservr" ]
+FROM postgres:12 as db
+WORKDIR /app
+COPY ./init.sh /docker-entrypoint-initdb.d
+COPY ./init.sql ./scripts/db/init.sql
